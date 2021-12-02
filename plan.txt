@@ -1,0 +1,57 @@
+
+Notes 
+ - We will try to not tell the client programs the word at the beginning, and
+   keep the word hidden by the server. If this becomes too much of a hassle,
+   we'll just ignore it.
+
+ - We still have to make many design decisions:
+   - Are there multiple rounds, or is does the program terminate after a round?
+     Can players join mid-round/between rounds?
+   - Does the game end when someone guesses the word? Can others still try to
+     guess after someone wins?
+
+ - All socket communication can be simple strings. 
+   - To send, you first write the amount of bytes in the string over the socket
+     in a 4-byte big-endian int, and then write the string.
+   - To receive, you first read the 4-byte big-endian int, and then read that
+     many more bytes to get the string.
+
+Final Product
+ - two programs, server and client
+
+ - Server UI
+   - Host Phase:
+     - The server hosts a game, accepting and interpreting client connections
+       as they come.
+     - The server tells the new clients who is currently playing and tells
+       existing clients when new clients join.
+
+   - Game Phase:
+     - The server starts the game and informs all clients.
+     - The server chooses a word, tells clients once word is chosen.
+     - When server receives char guesses ... 
+       - It tells the guesser if the char appears in the word, and where it
+         appears in the word.
+       - It tells all other clients if the guesser made any progress.
+     - The game ends when someone wins or everyone loses. Once the game is
+       over, the server tells all clients what the word was. Then the server
+       can choose to restart the game or quit.
+
+ - Client UI
+   - Connect Phase:
+     - The user inputs the server's IP and their username, and the program
+       attempts to connect to that server with the username.
+     - Once connected, the program tells the user about any updates in the list
+       of players.
+
+   - Game Phase:
+     - The program tells the user how many letters the word has with
+       underscores (like hangman).
+     - The user types in characters, and the program sends the character to the
+       server to check if it's in the word. The server tells if/where it
+       appears in the word.
+     - The client listens to the server to check the progress of other clients,
+       and shows this info to the user.
+     - If the client loses (too many guesses/someone else won), show a game
+       over screen.
+     - 
