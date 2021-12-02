@@ -2,7 +2,7 @@
 Notes 
  - We will try to not tell the client programs the word at the beginning, and
    keep the word hidden by the server. If this becomes too much of a hassle,
-   we'll just ignore it.
+   we'll just send the words to the clients.
 
  - We still have to make many design decisions:
    - Are there multiple rounds, or is does the program terminate after a round?
