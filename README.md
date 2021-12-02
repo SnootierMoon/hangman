@@ -1,16 +1,10 @@
-# Draw Plus Plus
+# Hangman
 
-An app written C++ with SDL2 that lets you play pictionary with your friends
-over the internet
+A network-based command line hangman written C++ for linux platforms.
+
+Uses ncurses and POSIX sockets.
 
 ## Getting Started
-
-### Libraries for Building
-
-- [CMake](https://cmake.org/install/)
-- SDL2, SDL2_ttf, SDL2_gfx, SDL2_net - see
-  [sdl2-cmake-modules](https://gitlab.com/aminosbh/sdl2-cmake-modules.git).
-  Installation is platform-dependent.
 
 ### Build
 
@@ -21,6 +15,3 @@ over the internet
 
 After building, the executable gets created in `/build/`.
 
-Currently, it's just a line-drawing test application. After running it, you can
-draw lines by holding the left mouse button and dragging the mouse around the
-screen.
