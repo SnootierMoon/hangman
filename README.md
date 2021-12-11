@@ -1,16 +1,13 @@
 # Draw Plus Plus
 
-An app written C++ with SDL2 that lets you play pictionary with your friends
-over the internet
+A fun networking-base game that's a hybrid of pictionary and hangman.
 
 ## Getting Started
 
 ### Libraries for Building
 
 - [CMake](https://cmake.org/install/)
-- SDL2, SDL2_ttf, SDL2_gfx, SDL2_net - see
-  [sdl2-cmake-modules](https://gitlab.com/aminosbh/sdl2-cmake-modules.git).
-  Installation is platform-dependent.
+- SDL2, SDL2_gfx, SDL2_net
 
 ### Build
 

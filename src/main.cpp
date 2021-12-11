@@ -1,78 +1,50 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL2_framerate.h>
-#include <SDL2/SDL2_gfxPrimitives.h>
-#include <iostream>
+#include "main.hpp"
 
-SDL_Window* window;
-SDL_Renderer* renderer;
-
-bool closed = false;
-int thickness = 5;
-
-int main() 
+int main(int argc, char** argv)
 {
-    SDL_Init(SDL_INIT_EVERYTHING);
-
-    window = SDL_CreateWindow("Test Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 400, 0);
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-    FPSmanager fps;
-    SDL_initFramerate(&fps);
-    SDL_setFramerate(&fps, 60);
-
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderClear(renderer);
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-
-    while (!closed)
+    if (argc != 2)
     {
-        SDL_Event event;
-        while (SDL_PollEvent(&event))
-        {
-            if (event.type == SDL_QUIT)
-            {
-                closed = true;
-            }
-            else if (event.type == SDL_MOUSEMOTION)
-            {
-                SDL_MouseMotionEvent motion = event.motion;
-                bool is_motion = motion.xrel || motion.yrel;
-                bool left_mouse_down = SDL_GetMouseState(NULL, NULL) & SDL_BUTTON_LMASK;
-                if (is_motion && left_mouse_down)
-                {
-                    thickLineRGBA(
-                            renderer,
-                            motion.x - motion.xrel, motion.y - motion.yrel,
-                            motion.x, motion.y,
-                            thickness * 2,
-                            0, 0, 0, 255
-                    );
-                    filledCircleRGBA(
-                            renderer,
-                            motion.x - motion.xrel, motion.y - motion.yrel,
-                            thickness,
-                            0, 0, 0, 255
-                    );
-                    filledCircleRGBA(
-                            renderer,
-                            motion.x, motion.y,
-                            thickness,
-                            0, 0, 0, 255
-                    );
-                }
-            }
-            else if (event.type == SDL_MOUSEWHEEL)
-            {
-                thickness += event.wheel.y;
-                thickness = std::min(std::max(thickness, 0), 30);
-            }
-        }
+        return usage(argv[0]);
+    } else {
+        string opt = argv[1];
 
-        SDL_RenderPresent(renderer);
-        SDL_framerateDelay(&fps);
+        if (opt == "server")
+        {
+            return server_run();
+        }
+        else if (opt == "client")
+        {
+            return client_run();
+        }
+        else
+        {
+            cout << "Invalid option \"" << opt << "\"" << endl;
+            return usage(argv[0]);
+        }
     }
 
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
 }
+
+int usage(char* argv0) 
+{
+    cout << "Usage: \"" << argv0 << " [server|client]\"" << endl;
+    return 1;
+}
+
+string get_input(string prompt)
+{
+    string msg;
+
+    cout << prompt << " > ";
+
+    getline(cin, msg);
+
+    if (cin.fail())
+    {
+        cout << endl;
+        exit(0);
+    }
+
+    return msg;
+}
+
