@@ -22,6 +22,7 @@ int client_run()
 }
 
 /** Client phase 1 
+ *
  * This function polls the player for a username and server IP, and then
  * attempts to connect to that server.
  */
@@ -29,7 +30,12 @@ void client_phase1()
 {
     // Ask player for username
     string username = get_input("Enter your username");
-    stringstream(username) >> username;
+
+    // Ensure that the username is only one word
+    stringstream username_stream;
+    username_stream.str(username);
+    username_stream >> username;
+
     cout << "Username: \"" << username << "\"" << endl;
 
     // Ask player for server IP
@@ -96,6 +102,11 @@ void client_phase1()
     }
 }
 
+/** Client phase 2
+ *
+ * This function sends locally drawn lines to the server, and draws lines
+ * received from the server.
+ */
 void client_phase2() 
 {
     bool done = false;
@@ -139,11 +150,10 @@ void client_phase2()
         {
             int x1, y1, x2, y2, thick;
 
-            stringstream stream = stringstream(sdl_net_read(socket));
+            stringstream stream;
+            stream.str(sdl_net_read(socket));
 
             stream >> x1 >> y1 >> x2 >> y2 >> thick;
-
-            cout << x1 << " " << y1 << " " << x2 << " " << y2 << " " << thick << endl;
 
             thickLineRGBA(
                     renderer,
@@ -165,14 +175,7 @@ void client_phase2()
                     0, 0, 0, 255
                     );
         }
-        filledCircleRGBA(
-                renderer,
-                0, 0,
-                50,
-                0, 0, 0, 255
-        );
 
-        cout << "update" << endl;
         sdl_update();
     }
 }

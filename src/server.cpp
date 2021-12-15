@@ -31,6 +31,7 @@ int server_run()
 }
 
 /** Server phase 1
+ *
  * This functions creates the server socket, establishes connections with
  * client sockets, and then informs them when a game is ready.
  */
@@ -110,12 +111,17 @@ void server_phase1()
     }
 }
 
+/** Server phase 2
+ *
+ * This function runs the game. It simply relays the messages between clients.
+ */
 void server_phase2()
 {
     bool done = false;
     while (!done) 
     {
         SDL_Event event;
+        // Check if the server is closed
         while (SDL_PollEvent(&event)) 
         {
             if (event.type == SDL_QUIT)
@@ -124,15 +130,20 @@ void server_phase2()
             }
         }
 
+        // Iterate through clients
         SDLNet_CheckSockets(socket_set, 0);
         for (int i = 0; i < clients.size(); i++)
         {
+            // Check if the client has new data
             if (SDLNet_SocketReady(clients[i].socket)) 
             {
+                // Read the data
                 string msg = sdl_net_read(clients[i].socket);
 
+                // If the client disconnected ...
                 if (msg == "") 
                 {
+                    // Close the connection with the client
                     SDLNet_TCP_DelSocket(socket_set, clients[i].socket);
                     SDLNet_TCP_Close(clients[i].socket);
                     clients.erase(clients.begin() + i);
@@ -140,6 +151,7 @@ void server_phase2()
                 } 
                 else
                 {
+                    // Otherwise, broadcast the message to all clients
                     for (int j = 0; j < clients.size(); j++) 
                     {
                         sdl_net_write(clients[j].socket, msg);
