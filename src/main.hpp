@@ -24,7 +24,7 @@ int usage(char* argv0);
 int server_run();
 int client_run();
 void sdl_init();
-void sdl_init_window();
+void sdl_init_window(string title);
 void sdl_update();
 void sdl_net_write(TCPsocket socket, string msg);
 string sdl_net_read(TCPsocket socket);

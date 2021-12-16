@@ -6,6 +6,7 @@ static void client_phase2();
 static IPaddress addr;
 static TCPsocket socket;
 static SDLNet_SocketSet socket_set;
+static string username;
 
 /** Run the client
  *
@@ -29,7 +30,7 @@ int client_run()
 void client_phase1()
 {
     // Ask player for username
-    string username = get_input("Enter your username");
+    username = get_input("Enter your username");
 
     // Ensure that the username is only one word
     stringstream username_stream;
@@ -90,10 +91,10 @@ void client_phase1()
         msg >> word;
         if (word == "Conn")
         {
-            string username;
-            msg >> username;
+            string user;
+            msg >> user;
 
-            cout << "New player: \"" << username << "\"." << endl;
+            cout << "New player: \"" << user << "\"." << endl;
         }
         else if (word == "Start")
         {
@@ -112,7 +113,7 @@ void client_phase2()
     bool done = false;
     int thickness = 20;
 
-    sdl_init_window();
+    sdl_init_window("Draw++ - " + username);
 
     while (!done)
     {

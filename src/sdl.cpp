@@ -20,10 +20,12 @@ void sdl_init()
 }
 
 /** Create the SDL window and renderer
+ *
+ * @param title the title of the window
  */
-void sdl_init_window()
+void sdl_init_window(string title)
 {
-    window = SDL_CreateWindow("Test Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 400, 0);
+    window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 400, 0);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
