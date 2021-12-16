@@ -52,13 +52,17 @@ string playGame (string word)
         }
         if (!correctGuess)
         {
-            points--;
+            if(points > 0)
+            {
+               points--;
+            }
             cout << " "<< endl;
             cout << "Number of Points: " << points << endl;
             cout << guess << " is not in the word." << endl;
             return loser_message;
         }
     }
+    cout << "Number of Points: " << points << endl;
     return winner_message;
 }
 int main()
